@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;--bg2:#0f0f1a;--bg3:#13131f;--bg4:#1a1a28;--bg5:#1e1e2e;
+  --border:#ffffff0d;--border2:#ffffff15;--border3:#ffffff22;
+  --text:#f0f0f4;--text2:#9898aa;--text3:#55556a;--text4:#3a3a52;
+  --red:#e24b4a;--red-dim:#e24b4a1a;--red-soft:#e24b4a35;
+  --amber:#ef9f27;--amber-dim:#ef9f271a;
+  --blue:#378add;--blue-dim:#378add1a;
+  --green:#3dc98a;--green-dim:#3dc98a15;
+  --purple:#a78bfa;--purple-dim:#a78bfa15;
+  --teal:#2dd4bf;--teal-dim:#2dd4bf15;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding:0 28px}
+
+/* masthead */
+.masthead{border-bottom:0.5px solid var(--border2);padding:16px 0;position:sticky;top:0;background:rgba(9,9,15,.92);backdrop-filter:blur(12px);z-index:100}
+.masthead-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.masthead-logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:var(--red);display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.logo-text{font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--text)}
+.logo-sub{font-size:10px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:1px}
+.masthead-right{display:flex;align-items:center;gap:20px}
+.live-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);letter-spacing:.04em}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.nav-links{display:flex;gap:20px}
+.nav-link{font-size:12px;color:var(--text3);cursor:pointer;letter-spacing:.03em;transition:color .2s;background:none;border:none}
+.nav-link:hover{color:var(--text2)}
+.refresh-btn{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);background:none;border:0.5px solid var(--border2);border-radius:99px;cursor:pointer;letter-spacing:.04em;padding:5px 12px;transition:all .2s}
+.refresh-btn:hover{color:var(--text2);border-color:var(--border3)}
+.refresh-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* hero */
+.hero{padding:76px 0 60px;position:relative;overflow:hidden}
+.hero-bg-ring{position:absolute;border-radius:50%;border:0.5px solid var(--border2);pointer-events:none}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.issue-tag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);border:0.5px solid var(--red-soft);padding:4px 10px;border-radius:4px}
+.issue-date{font-size:11px;color:var(--text3);letter-spacing:.05em}
+.sep{width:3px;height:3px;border-radius:50%;background:var(--text4)}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(34px,5.5vw,58px);font-weight:700;line-height:1.1;color:var(--text);max-width:700px;margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--red)}
+.hero-sub{font-size:15px;color:var(--text2);max-width:520px;line-height:1.75;margin-bottom:40px}
+#rbanner{display:none;margin:0 0 24px;background:var(--blue-dim);border:0.5px solid #378add25;border-radius:8px;padding:10px 16px;font-size:12px;color:var(--blue)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.hstat{background:var(--bg2);padding:20px 22px;border-right:0.5px solid var(--border2);transition:background .2s}
+.hstat:last-child{border-right:none}
+.hstat:hover{background:var(--bg3)}
+.hstat-val{font-size:26px;font-weight:600;color:var(--text);letter-spacing:-.02em;font-family:'Playfair Display',serif}
+.hstat-lbl{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.45}
+.hstat-delta{font-size:11px;color:var(--red);margin-top:6px;font-weight:500}
+
+/* ticker */
+.ticker-wrap{border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:10px 0;overflow:hidden;position:relative;margin-bottom:0}
+.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 30s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);letter-spacing:.03em;flex-shrink:0}
+.ticker-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* section heads */
+.section-head{display:flex;align-items:baseline;justify-content:space-between;padding:52px 0 22px}
+.section-head h2{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3)}
+.section-count{font-size:11px;color:var(--text4)}
+
+/* filters */
+.filters{display:flex;gap:5px;margin-bottom:26px;flex-wrap:wrap}
+.filter{font-size:11px;padding:5px 14px;border-radius:99px;border:0.5px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;transition:all .18s;letter-spacing:.03em}
+.filter:hover{border-color:var(--border3);color:var(--text2)}
+.filter.on{background:var(--text);color:var(--bg);border-color:transparent;font-weight:500}
+
+/* news grid — NO gap, use border layout with radius on container */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.ncard{background:var(--bg2);padding:26px;cursor:pointer;transition:background .18s;position:relative;border-right:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2)}
+.ncard:hover{background:var(--bg3)}
+.ncard-stripe{position:absolute;top:0;left:0;width:2.5px;height:100%}
+.ncard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ntag{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
+.ntag-red{background:var(--red-dim);color:var(--red)}
+.ntag-amber{background:var(--amber-dim);color:var(--amber)}
+.ntag-blue{background:var(--blue-dim);color:var(--blue)}
+.ntag-green{background:var(--green-dim);color:var(--green)}
+.ntag-purple{background:var(--purple-dim);color:var(--purple)}
+.ndate{font-size:10px;color:var(--text4);letter-spacing:.03em}
+.ncard h3{font-size:14px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:10px}
+.ncard p{font-size:12px;color:var(--text2);line-height:1.65}
+.ncard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+.nsrc{font-size:10px;color:var(--text4);letter-spacing:.02em}
+.nmore{font-size:11px;color:var(--text3);border-bottom:0.5px solid var(--border3);padding-bottom:1px;transition:color .18s;white-space:nowrap}
+.ncard:hover .nmore{color:var(--text2)}
+
+/* featured card */
+.featured-card{background:var(--bg2);border-radius:14px;border:0.5px solid var(--border2);padding:32px;margin-bottom:12px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.featured-card:hover{background:var(--bg3)}
+.featured-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.featured-label:before{content:'';display:inline-block;width:16px;height:1px;background:var(--red)}
+.featured-card h2{font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,28px);font-weight:700;line-height:1.25;color:var(--text);max-width:640px;margin-bottom:12px}
+.featured-card p{font-size:13px;color:var(--text2);max-width:580px;line-height:1.7;margin-bottom:20px}
+.featured-foot{display:flex;align-items:center;gap:16px}
+.featured-src{font-size:11px;color:var(--text3)}
+.featured-read{font-size:11px;color:var(--red);border-bottom:0.5px solid var(--red-soft);padding-bottom:1px}
+.featured-bg-text{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:120px;font-weight:700;color:var(--border);line-height:1;pointer-events:none;user-select:none}
+
+/* threat */
+.threat-list{border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.trow{display:grid;grid-template-columns:190px 1fr 52px;align-items:center;gap:20px;padding:16px 24px;background:var(--bg2);border-bottom:0.5px solid var(--border2);transition:background .18s}
+.trow:last-child{border-bottom:none}
+.trow:hover{background:var(--bg3)}
+.trow-name{font-size:13px;font-weight:500;color:var(--text)}
+.trow-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.tbar-wrap{background:var(--border2);border-radius:99px;height:3px}
+.tbar{height:3px;border-radius:99px;transition:width .8s ease}
+.tpct{font-size:12px;font-weight:500;text-align:right}
+
+/* skills */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.skill{background:var(--bg2);padding:26px;transition:background .18s;border-right:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2)}
+.skill:hover{background:var(--bg3)}
+.skill-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.skill-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;font-family:'Playfair Display',serif;font-style:italic}
+.si-blue{background:var(--blue-dim);color:var(--blue)}
+.si-amber{background:var(--amber-dim);color:var(--amber)}
+.si-purple{background:var(--purple-dim);color:var(--purple)}
+.si-green{background:var(--green-dim);color:var(--green)}
+.si-red{background:var(--red-dim);color:var(--red)}
+.si-teal{background:var(--teal-dim);color:var(--teal)}
+.skill-name{font-size:13px;font-weight:500;color:var(--text)}
+.skill-desc{font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:14px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
+.stag{font-size:10px;padding:3px 8px;border-radius:4px;background:var(--bg4);color:var(--text3);border:0.5px solid var(--border2);letter-spacing:.02em}
+.guide-link{font-size:11px;color:var(--text3);border-bottom:0.5px solid var(--border3);padding-bottom:1px;transition:color .2s;cursor:pointer;display:inline-block}
+.guide-link:hover{color:var(--blue)}
+
+/* chart */
+.chart-area{background:var(--bg2);border-radius:14px;border:0.5px solid var(--border2);padding:30px 30px 22px}
+.chart-legend{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:22px}
+.cleg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text3)}
+.cleg-dot{width:22px;height:2px;border-radius:1px;flex-shrink:0}
+
+/* signal feed */
+.signal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.signal{background:var(--bg2);padding:18px 20px;transition:background .2s;border-right:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2);display:flex;flex-direction:column;justify-content:space-between;min-height:90px}
+.signal:hover{background:var(--bg3)}
+.signal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.signal-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.signal-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.02em;line-height:1}
+.signal-label{font-size:11px;color:var(--text3);line-height:1.45;margin-bottom:8px}
+.signal-trend{font-size:10px;font-weight:600}
+.tr-up{color:var(--red)}.tr-dn{color:var(--green)}
+
+/* glossary */
+.glossary{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));border-radius:14px;overflow:hidden;border:0.5px solid var(--border2)}
+.gterm{background:var(--bg2);padding:22px;border-right:0.5px solid var(--border2);border-bottom:0.5px solid var(--border2);transition:background .2s}
+.gterm:hover{background:var(--bg3)}
+.gterm-word{font-size:12px;font-weight:600;color:var(--text);letter-spacing:.03em;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.gterm-abbr{font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:3px;background:var(--bg4);color:var(--text3);border:0.5px solid var(--border2)}
+.gterm-def{font-size:12px;color:var(--text3);line-height:1.6}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:24px}
+.modal-bg.open{display:flex}
+.modal-box{background:var(--bg3);border:0.5px solid var(--border3);border-radius:16px;padding:34px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bg4);border:0.5px solid var(--border2);width:30px;height:30px;border-radius:50%;cursor:pointer;color:var(--text3);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.modal-close:hover{color:var(--text);border-color:var(--border3)}
+.modal-box h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin:14px 0 12px;line-height:1.3}
+.modal-body p{font-size:13px;color:var(--text2);line-height:1.72;margin-bottom:14px}
+.modal-body ul{padding-left:18px;margin-bottom:16px}
+.modal-body li{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:5px}
+.modal-body li::marker{color:var(--text4)}
+.modal-meta{font-size:11px;color:var(--text3);border-top:0.5px solid var(--border2);padding-top:14px;margin-top:10px}
+.modal-link{color:var(--blue);text-decoration:none;border-bottom:0.5px solid #378add20;padding-bottom:1px;display:inline-block;margin-top:7px;font-size:11px;transition:border-color .2s}
+.modal-link:hover{border-color:var(--blue)}
+.guide-meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 20px}
+.guide-badge{font-size:11px;padding:4px 12px;border-radius:99px;background:var(--bg4);color:var(--text3);border:0.5px solid var(--border2)}
+.guide-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.guide-resources{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+
+/* footer */
+.footer{border-top:0.5px solid var(--border2);margin-top:72px;padding:36px 0}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;margin-bottom:36px}
+.footer-col-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.footer-col p,.footer-col a{font-size:12px;color:var(--text3);line-height:1.7;display:block;text-decoration:none;transition:color .2s;margin-bottom:5px}
+.footer-col a:hover{color:var(--text2)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid var(--border);padding-top:24px;flex-wrap:wrap;gap:8px}
+.footer-copy{font-size:11px;color:var(--text4)}
+.back-top{position:fixed;bottom:28px;right:28px;width:36px;height:36px;border-radius:50%;background:var(--bg4);border:0.5px solid var(--border3);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s,background .2s;z-index:99}
+.back-top.visible{opacity:1;pointer-events:all}
+.back-top:hover{background:var(--bg5);border-color:var(--border3)}
+.back-top svg{width:13px;height:13px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.back-top:hover svg{stroke:var(--text2)}
+.footer-logo{display:flex;align-items:center;gap:8px}
+.footer-logo-mark{width:22px;height:22px;border-radius:6px;background:var(--red);display:flex;align-items:center;justify-content:center}
+.footer-logo-mark svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.footer-logo-text{font-size:12px;font-weight:600;color:var(--text3)}
+
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.spinning{animation:spin 1s linear infinite}
+</style>
+
+<header class="masthead">
+<div class="wrap">
+  <div class="masthead-inner">
+    <div class="masthead-logo">
+      <div class="logo-mark"><svg viewBox="0 0 16 16"><path d="M3 8h10M8 3l5 5-5 5"/></svg></div>
+      <div>
+        <div class="logo-text">Fraud Intel</div>
+        <div class="logo-sub">Food Delivery Edition</div>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div class="nav-links">
+        <button class="nav-link" onclick="navTo('section-intel')">Intelligence</button>
+        <button class="nav-link" onclick="navTo('section-threats')">Threats</button>
+        <button class="nav-link" onclick="navTo('section-skills')">Skills</button>
+        <button class="nav-link" onclick="navTo('section-glossary')">Glossary</button>
+      </div>
+      <div class="live-pill"><span class="live-dot"></span><span id="last-updated">March 13, 2026</span></div>
+      <button class="refresh-btn" id="refresh-btn" onclick="runRefresh()">
+        <svg id="ricon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        refresh intel
+      </button>
+    </div>
+  </div>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+
+<section class="hero">
+  <div class="hero-bg-ring" style="width:500px;height:500px;right:-120px;top:30px;opacity:.15"></div>
+  <div class="hero-bg-ring" style="width:340px;height:340px;right:-60px;top:90px;opacity:.08"></div>
+  <div class="hero-eyebrow">
+    <span class="issue-tag">Issue 01</span>
+    <span class="sep"></span>
+    <span class="issue-date">Q1 2026 Briefing</span>
+    <span class="sep"></span>
+    <span class="issue-date">Food Delivery & Fintech</span>
+  </div>
+  <h1>AI is <em>rewriting</em> the<br>rules of delivery fraud</h1>
+  <p class="hero-sub">From deepfake proof-of-delivery photos to graph-powered fraud rings — your complete intelligence briefing for fraud analytics professionals in food delivery and fintech.</p>
+  <div id="rbanner"></div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">$103B</div><div class="hstat-lbl">first-party fraud disputes, 2024</div><div class="hstat-delta">↑ 50% vs 2023</div></div>
+    <div class="hstat"><div class="hstat-val">72%</div><div class="hstat-lbl">ATO surge in QSR & delivery, 2025</div><div class="hstat-delta">↑ year-over-year</div></div>
+    <div class="hstat"><div class="hstat-val">20%</div><div class="hstat-lbl">of delivery accounts face ATO attempts</div><div class="hstat-delta">↑ 8× industry average</div></div>
+    <div class="hstat"><div class="hstat-val">30%</div><div class="hstat-lbl">of fraud attempts now AI-generated</div><div class="hstat-delta">Pindrop, 2026</div></div>
+  </div>
+</section>
+
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<div class="wrap">
+
+<div class="section-head" id="section-signals" style="padding-top:48px">
+  <h2>Key signals</h2>
+  <span class="section-count">live metrics</span>
+</div>
+<div class="signal-grid" id="signal-grid"></div>
+
+<div class="section-head" id="section-intel">
+  <h2>Latest intelligence</h2>
+  <span class="section-count" id="card-count">10 briefings</span>
+</div>
+
+<div id="featured-wrap"></div>
+
+<div class="filters" id="filters">
+  <button class="filter on" onclick="doFilter('all',this)">All</button>
+  <button class="filter" onclick="doFilter('incident',this)">Incidents</button>
+  <button class="filter" onclick="doFilter('pattern',this)">Fraud patterns</button>
+  <button class="filter" onclick="doFilter('ai',this)">AI & ML</button>
+  <button class="filter" onclick="doFilter('industry',this)">Industry data</button>
+</div>
+<div class="news-grid" id="news-grid"></div>
+
+<div class="section-head" id="section-threats">
+  <h2>Threat severity index</h2>
+  <span class="section-count">8 vectors tracked</span>
+</div>
+<div class="threat-list" id="threat-list"></div>
+
+<div class="section-head" id="section-skills">
+  <h2>Skills briefing</h2>
+  <span class="section-count">8 skills mapped</span>
+</div>
+<div style="background:var(--bg2);border:0.5px solid var(--border2);border-radius:14px;padding:24px 28px;margin-bottom:12px;display:flex;align-items:center;gap:20px">
+  <div style="width:3px;height:52px;background:var(--red);border-radius:99px;flex-shrink:0"></div>
+  <div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:6px">The market's answer to fraud</div>
+    <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:6px">These are the tools and skills fraud teams need to fight back in 2026</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6">As AI-generated fraud scales, the industry response is equally technical. Mastering these 8 disciplines puts you at the frontier of what platforms like Talabat, DoorDash, and Delivery Hero are actively hiring and building for.</div>
+  </div>
+</div>
+<div class="skills-grid" id="skills-grid"></div>
+
+<div class="section-head" id="section-chart">
+  <h2>Fraud growth index</h2>
+  <span class="section-count">2021 – 2026 projection</span>
+</div>
+<div class="chart-area">
+  <div class="chart-legend">
+    <span class="cleg"><span class="cleg-dot" style="background:var(--red)"></span>ATO attacks</span>
+    <span class="cleg"><span class="cleg-dot" style="background:var(--blue)"></span>Refund & promo abuse</span>
+    <span class="cleg"><span class="cleg-dot" style="background:var(--purple)"></span>AI-enabled fraud</span>
+  </div>
+  <div style="position:relative;height:210px"><canvas id="chart"></canvas></div>
+</div>
+
+<div class="section-head" id="section-glossary">
+  <h2>Fraud glossary</h2>
+  <span class="section-count">12 terms defined</span>
+</div>
+<div class="glossary" id="glossary"></div>
+
+</div>
+</main>
+
+<footer class="footer">
+<div class="wrap">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-col-title">About</div>
+      <p>Fraud Intel is a personal command center for fraud analytics professionals in food delivery and fintech. Curated intelligence on patterns, tools, and skills that matter.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Sections</div>
+      <a href="#" onclick="scrollTo('#section-intel')">Intelligence feed</a>
+      <a href="#" onclick="scrollTo('#section-threats')">Threat severity index</a>
+      <a href="#" onclick="scrollTo('#section-skills')">Skills briefing</a>
+      <a href="#" onclick="scrollTo('#section-glossary')">Fraud glossary</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Sources</div>
+      <a href="https://sift.com/blog" target="_blank">Sift FIBR</a>
+      <a href="https://www.ravelin.com/blog" target="_blank">Ravelin Research</a>
+      <a href="https://arxiv.org" target="_blank">ArXiv ML Papers</a>
+      <a href="https://kdd.org" target="_blank">ACM KDD Conference</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-logo">
+      <div class="footer-logo-mark"><svg viewBox="0 0 16 16"><path d="M3 8h10M8 3l5 5-5 5"/></svg></div>
+      <span class="footer-logo-text">Fraud Intel</span>
+    </div>
+    <span class="footer-copy">Q1 2026 · Food Delivery Edition · For fraud analytics professionals</span>
+    <span class="footer-copy" id="footer-date">March 2026</span>
+  </div>
+</div>
+</footer>
+
+<button class="back-top" id="back-top" onclick="document.documentElement.scrollIntoView({behavior:'smooth'})" title="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="modal-bg" id="modal-bg" onclick="closeMod(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeMod()">✕</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function scrollTo(id){document.querySelector(id)&&document.querySelector(id).scrollIntoView({behavior:'smooth'})}
+
+const CARDS=[
+  {id:1,cat:'incident',tag:'Incident',tc:'ntag-red',ac:'#e24b4a',date:'Jan 4, 2026',featured:true,
+   title:'Driver uses AI-generated photo to fake a DoorDash delivery',
+   summary:"A DoorDash driver in Austin accepted an order, immediately marked it delivered, and submitted an AI-generated image of the customer's front door. The platform permanently banned the driver — one of the first documented cases of AI image generation weaponized against delivery verification.",
+   detail:"The driver used reference images from prior deliveries to composite a DoorDash bag onto the address photo, exploiting the timing window between order acceptance and customer expectation. DoorDash now requires selfie biometric verification via Persona for drivers and is upgrading image forensics algorithms to detect synthetic imagery at complaint intake.",
+   bullets:['AI compositing using reference images from prior deliveries to the same address','Immediate delivered marking before any actual delivery attempt','DoorDash now mandates biometric selfie verification at driver session start','34% rise in gig-economy fraud complaints in Q3 2025 vs Q3 2024'],
+   source:'TechCrunch, Jan 2026',link:'https://techcrunch.com/2026/01/04/doordash-says-it-banned-driver-who-seemingly-faked-a-delivery-using-ai/'},
+  {id:2,cat:'incident',tag:'Incident',tc:'ntag-red',ac:'#e24b4a',date:'Jan 2026',
+   title:'Zomato CEO confirms AI-edited complaint images used for refund fraud',
+   summary:"Deepinder Goyal acknowledged Zomato is seeing customers use generative AI to add insects or damage to food photos, then submit them for refunds. The assumption that images don't lie is now broken.",
+   detail:"This signals a systemic breakdown in photo-based complaint workflows across all food delivery platforms. Previously, adding fake damage required skill — platforms accepted photos as reliable evidence. Generative AI makes this scalable on any smartphone in seconds. Detection now requires EXIF metadata validation and computer vision forensics at complaint intake.",
+   bullets:['AI-edited food photos manufacturing false evidence of damage or contamination','Platforms must now validate photo metadata: timestamps, EXIF data, multiple angles','Machine-vision image forensics becoming mandatory in fraud ops toolkits','Refund abuse sits in top 5 threats for 90% of QSR providers (MRC 2025)'],
+   source:'Medium / Vaibhav Kumar, Jan 2026',link:'https://codewithvamp.medium.com/how-generative-ai-is-breaking-food-delivery-apps-792f597c52ab'},
+  {id:3,cat:'incident',tag:'Social engineering',tc:'ntag-amber',ac:'#ef9f27',date:'Jan 5–9, 2026',
+   title:'AI-written Reddit "whistleblower" post earns 87k upvotes before exposure',
+   summary:"A viral Reddit post alleging systemic driver exploitation at an unnamed food delivery app was confirmed AI-generated disinformation — racking up 90k upvotes and millions of impressions.",
+   detail:"The post by account 'Trowaway_whistleblow' described a 'desperation score' penalizing drivers for accepting low-value orders. Claude, ChatGPT, and Gemini all flagged the text as likely AI-generated. This demonstrates AI disinformation can now shape platform reputation at scale — a new attack surface fraud and trust & safety teams must monitor.",
+   bullets:['AI-authored disinformation mimicking insider whistleblower disclosures','Viral social engineering targeting platform brand and regulatory standing','AI-written content now indistinguishable from authentic employee accounts','New category: narrative fraud — reputational attacks via synthetic content'],
+   source:'NBC News, Platformer, TechCrunch',link:'https://www.nbcnews.com/tech/internet/reddit-ai-food-delivery-fraud-rcna252661'},
+  {id:4,cat:'pattern',tag:'Fraud pattern',tc:'ntag-amber',ac:'#ef9f27',date:'Ongoing 2025/2026',
+   title:'Account takeover in food delivery runs at 8× the cross-industry average',
+   summary:'Around 20% of delivery accounts face takeover attempts vs 2.5% cross-industry. ATO attacks in QSR surged 72% year-over-year in 2025, driven by credential stuffing and PhaaS platforms.',
+   detail:"Food delivery apps are structurally vulnerable: they optimize for frictionless checkout, store payment details, and have high transaction velocity. Compromised accounts are sold on dark web markets — DoorDash accounts with saved cards at $4.49. Call center social engineering via knowledge-based authentication is a persistent entry point.",
+   bullets:['Credential stuffing: millions of stolen login pairs tested in automated waves','Dark web account markets — verified accounts with stored cards from $4.49','PhaaS tools (Sneaky 2FA, Tycoon 2FA, EvilProxy) lowering barriers to near-zero','52% of global login attempts involve leaked credentials (Cloudflare, 2025)','Social engineering of call center agents to bypass knowledge-based authentication'],
+   source:'Sift FIBR, Mitek Systems, Ravelin 2025',link:'https://sift.com/blog/food-delivery-fraud-benchmarking-risk-and-tracking-trends/'},
+  {id:5,cat:'pattern',tag:'Fraud pattern',tc:'ntag-amber',ac:'#ef9f27',date:'2024/2025',
+   title:'First-party fraud now accounts for 60–80% of all chargeback disputes',
+   summary:'Panelists at MRC Vegas 2025 estimated first-party fraud (refund abuse, promo abuse, friendly fraud) represents 60–80% of fraudulent chargeback disputes across food delivery platforms.',
+   detail:'First-party fraud originates from real, verified accounts — making it uniquely hard to block without false positives. Organized groups share card fingerprints across many accounts to scale promo abuse into a profitable operation at the ring level, while individual actors use AI-edited images to manufacture complaint evidence.',
+   bullets:['Refund abuse: false non-delivery or inedible claims from legitimate accounts','Promo abuse: multi-accounting to repeatedly redeem new-user offers at scale','Friendly fraud: charge-back after consumption — no intent to dispute legitimately','Avg chargeback rate for QSR: 0.048% — approaching industry danger thresholds','Organized voucher farming rings operate at scale across MENA, SEA, and EU markets'],
+   source:'Sift, MRC Vegas 2025',link:'https://sift.com/blog/food-delivery-fraud-benchmarking-risk-and-tracking-trends/'},
+  {id:6,cat:'pattern',tag:'Fraud pattern',tc:'ntag-amber',ac:'#ef9f27',date:'2025',
+   title:'Driver account sharing: a shadow workforce inside delivery platforms',
+   summary:"Drivers sell or share verified accounts for a fee. The NYT estimated 65,000+ shadow delivery workers in NYC alone — creating safety gaps, accountability failures, and fraud entry points.",
+   detail:"Shared driver accounts enable ghost deliveries, the 'single sauce packet' social engineering scam against customers, and insertion of unvetted individuals into delivery networks. Device fingerprinting and GPS velocity anomaly detection are being deployed to flag multi-device usage or geographically impossible travel on a single account.",
+   bullets:['Single sauce packet scam: social engineering drivers to obtain fraudulent cancellation credits','Device fingerprinting to detect multiple devices active on one account simultaneously','GPS velocity checks to flag physically impossible travel between consecutive deliveries','Biometric session-start selfies becoming standard at top-tier platforms in 2026'],
+   source:'NYT / Fingerprint.com 2025',link:'https://fingerprint.com/blog/preventing-account-security-fraud-in-food-delivery-services/'},
+  {id:7,cat:'ai',tag:'AI / ML',tc:'ntag-blue',ac:'#378add',date:'2025/2026',
+   title:'Graph Neural Networks + LLMs become the frontier in fraud ring detection',
+   summary:'Research at KDD 2025 (FLAG) shows GNNs significantly outperform classical ML on coordinated fraud. New hybrids with LLM embeddings surface fraud rings invisible to per-transaction models.',
+   detail:'Traditional ML evaluates each transaction in isolation. GNNs model relationships — shared devices, IP clusters, card fingerprints, delivery addresses — surfacing coordinated fraud that looks innocent at the account level. Production stack: Neo4j + PyTorch Geometric + Kafka. PromoGuardian (2026) specifically targets promo abuse rings via multi-relation graph models.',
+   bullets:['GNNs outperform classical ML on coordinated ring fraud (ArXiv 2411.05815)','FLAG (KDD 2025): LLM embeddings + GNN for tabular + relational fraud signals combined','PromoGuardian (2026): multi-relation GNN purpose-built for promo abuse detection','Stack: Neo4j + PyTorch Geometric + Apache Kafka for real-time ring scoring','Federated learning enabling cross-platform models without raw data sharing'],
+   source:'ArXiv, KDD 2025, GitHub safe-graph',link:'https://arxiv.org/abs/2411.05815'},
+  {id:8,cat:'ai',tag:'AI / ML',tc:'ntag-blue',ac:'#378add',date:'2025/2026',
+   title:'Kafka + XGBoost still dominates production; SHAP becomes table stakes',
+   summary:'While GNNs lead research, production fraud scoring in 2025/2026 runs predominantly on XGBoost via Kafka pipelines. Feature engineering remains the highest-value individual skill.',
+   detail:'Key production patterns: Kafka ingests order events in real-time, a scoring microservice calls XGBoost and returns a decision before checkout completes (sub-200ms p99). SHAP explainability is now a compliance requirement at most regulated payment platforms. Shadow mode deployment before going live is an industry non-negotiable.',
+   bullets:['Kafka-first: sub-200ms fraud scoring pipeline before order confirmation fires','XGBoost + SMOTE: the workhorse combination for <1% fraud label datasets','SHAP values required for rule review, dispute management, and regulatory audit','Shadow mode before live deployment is an industry non-negotiable in 2025/2026','DoorDash DeepRed and Uber ML platforms share architecture patterns in public eng blogs'],
+   source:'AppInventiv, RiseupLabs 2025/2026',link:'https://riseuplabs.com/ai-in-food-delivery-app-development/'},
+  {id:9,cat:'industry',tag:'Industry data',tc:'ntag-green',ac:'#3dc98a',date:'2025',
+   title:'$190B+ market — fast-food fraud up 50% in 2024, $225B losses projected by 2029',
+   summary:'The global food delivery market exceeded $190B in 2025. Fast food fraud rose nearly 50% in 2024. Global e-commerce fraud losses hit $138.56B in 2025, projected cumulatively at $225B by 2029.',
+   detail:'Fraud scales in direct proportion to market growth. Platforms competing aggressively on UX face internal resistance to friction-adding controls. The core challenge: block fraud without disrupting legitimate users, especially in acquisition-heavy markets like MENA where new-user behavioral signals are thin and first-order fraud rates are elevated.',
+   bullets:['$190B+ global food delivery market value as of 2025','Fast-food fraud up ~50% in 2024 alone (Sift FIBR benchmark data)','$138.56B in global e-commerce fraud losses in 2025','$225B projected cumulative losses through 2029 (Juniper Research)','ATO losses specifically projected to reach $17B globally in 2025 (SEON)'],
+   source:'Sift, Ravelin, SEON 2025',link:'https://sift.com/blog/food-delivery-fraud-benchmarking-risk-and-tracking-trends/'},
+  {id:10,cat:'industry',tag:'Industry data',tc:'ntag-purple',ac:'#a78bfa',date:'2026',
+   title:'Deepfake-as-a-Service: 3 in 10 fraud attempts are now AI-generated',
+   summary:'DaaS platforms became commercially available in 2025. Pindrop estimates 30% of high-impact fraud attempts are now AI-generated. Some chains report 1,000+ AI bot calls per day.',
+   detail:"DaaS offers voice cloning, video deepfakes, synthetic identity generation, and AI-written phishing at subscription rates. In delivery: AI voice bots probe call centers 24/7 for refund-approving agents, AI-manipulated complaint photos bypass visual review, and synthetic identities target loyalty signup bonuses. Detection requires C2PA content credential validation and behavioral biometrics.",
+   bullets:['30% of high-impact fraud attempts now AI-generated (Pindrop, 2026)','AI voice bots probing call centers 24/7 for refund-approving agents','Synthetic identity fraud targets loyalty program onboarding with AI-fabricated histories','Modern deepfake video bypasses detection with 90%+ success rate (Cyble 2025)','C2PA content credentials and EXIF metadata becoming mandatory fraud signals'],
+   source:'Fisher Phillips, Cyble, Pindrop 2025/2026',link:'https://www.fisherphillips.com/en/news-insights/the-top-7-ai-generated-retail-scams-you-need-to-worry-about-in-2026.html'}
+];
+
+const THREATS=[
+  {name:'AI photo fraud',desc:'AI-generated delivery & complaint images',pct:92,color:'#e24b4a'},
+  {name:'Account takeover',desc:'Credential stuffing, PhaaS, social engineering',pct:88,color:'#d85a30'},
+  {name:'DaaS fraud rings',desc:'Coordinated multi-account AI-assisted attacks',pct:85,color:'#a78bfa'},
+  {name:'Promo & voucher abuse',desc:'Multi-accounting, shared fingerprints, ring farming',pct:82,color:'#ef9f27'},
+  {name:'Refund abuse',desc:'First-party friendly fraud, false non-delivery',pct:78,color:'#378add'},
+  {name:'Driver account sharing',desc:'Shadow workforce, ghost orders, social engineering',pct:71,color:'#2dd4bf'},
+  {name:'Synthetic identity',desc:'AI-fabricated loyalty & new-user accounts',pct:65,color:'#3dc98a'},
+  {name:'AI voice bots',desc:'Automated call center probing for refunds',pct:60,color:'#7f77dd'}
+];
+
+const SKILLS=[
+  {icon:'G',si:'si-blue',name:'Graph ML (GNN)',desc:'Model fraud rings via shared device, IP, and card relationship graphs.',tags:['Python','PyTorch Geometric','Neo4j','NetworkX'],
+   guide:{time:'3–4 months',level:'Intermediate–Advanced',steps:['Learn graph theory basics — nodes, edges, adjacency matrices, random walks','Work through Stanford CS224W free online course — the gold standard for GNNs','Build a small fraud graph: connect orders sharing device ID or IP in Neo4j','Train a GraphSAGE or GCN model on the graph using PyTorch Geometric','Read FLAG (KDD 2025) and PromoGuardian (2026) for fraud-specific GNN patterns','Deploy via FastAPI endpoint consuming real-time Kafka order events'],resources:[{l:'Stanford CS224W (free)',u:'https://web.stanford.edu/class/cs224w/'},{l:'PyTorch Geometric docs',u:'https://pytorch-geometric.readthedocs.io'},{l:'Neo4j Graph Academy',u:'https://graphacademy.neo4j.com'},{l:'ArXiv: GNNs for fraud review',u:'https://arxiv.org/abs/2411.05815'}]}},
+  {icon:'X',si:'si-amber',name:'XGBoost + imbalanced data',desc:'SMOTE, class weights, and precision-recall tradeoffs for <1% fraud labels.',tags:['XGBoost','scikit-learn','imbalanced-learn','SHAP'],
+   guide:{time:'3–6 weeks',level:'Beginner–Intermediate',steps:['Start with Kaggle Intro to ML or fast.ai Practical ML — free, ~1 week','Train XGBoost on the IEEE-CIS Fraud Detection dataset on Kaggle','Apply SMOTE and class_weight; compare precision-recall curves carefully','Add SHAP for explainability — practice explaining a flagged false positive','Tune decision threshold for your target FPR vs fraud catch rate tradeoff','Study Kaggle winning solutions for IEEE-CIS to learn advanced feature engineering'],resources:[{l:'IEEE-CIS Fraud Dataset (Kaggle)',u:'https://www.kaggle.com/c/ieee-fraud-detection'},{l:'imbalanced-learn docs',u:'https://imbalanced-learn.org'},{l:'SHAP documentation',u:'https://shap.readthedocs.io'},{l:'fast.ai Practical ML',u:'https://course.fast.ai'}]}},
+  {icon:'K',si:'si-purple',name:'Real-time scoring (Kafka)',desc:'Sub-200ms fraud decision pipelines. Event-driven feature engineering at order time.',tags:['Apache Kafka','Python','Redis','FastAPI'],
+   guide:{time:'4–6 weeks',level:'Intermediate',steps:['Learn Kafka fundamentals — topics, producers, consumers via Confluent free course','Set up a local Kafka cluster via Docker; produce and consume order events in Python','Build a FastAPI microservice that receives an event and returns a fraud score','Add Redis for real-time feature lookups (e.g. order count per customer in last 1h)','Benchmark end-to-end latency; target sub-200ms p99 as acceptance threshold','Read DoorDash and Uber engineering blogs for real production architecture patterns'],resources:[{l:'Confluent Kafka free course',u:'https://developer.confluent.io/courses/'},{l:'FastAPI documentation',u:'https://fastapi.tiangolo.com'},{l:'Redis documentation',u:'https://redis.io/docs/latest/'},{l:'Uber Engineering Blog',u:'https://www.uber.com/en-US/blog/engineering/'}]}},
+  {icon:'V',si:'si-green',name:'Computer vision forensics',desc:'Detect AI-generated or manipulated complaint and delivery proof images.',tags:['OpenCV','ResNet','EXIF','C2PA'],
+   guide:{time:'4–8 weeks',level:'Intermediate',steps:['Learn OpenCV basics — reading, resizing, color spaces, histogram analysis','Study EXIF metadata: use Pillow/piexif to extract and flag suspicious or absent fields','Fine-tune ResNet or EfficientNet on real vs AI-generated image datasets on Kaggle','Explore DIRE and CNNDetection open-source detectors on GitHub','Read about the C2PA content credentials standard — the emerging industry spec','Build an API: input image URL, output a manipulation risk score + metadata flags'],resources:[{l:'OpenCV Python tutorials',u:'https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html'},{l:'CNNDetection (GitHub)',u:'https://github.com/peterwang512/CNNDetection'},{l:'C2PA standard docs',u:'https://c2pa.org'},{l:'Kaggle AI-generated image detection',u:'https://www.kaggle.com/competitions/ai-generated-image-detection'}]}},
+  {icon:'B',si:'si-teal',name:'Behavioral biometrics',desc:'Session-level anomaly detection via typing, touch, device motion, and navigation signals.',tags:['Feature engineering','Isolation Forest','Device fingerprint','ML'],
+   guide:{time:'3–5 weeks',level:'Intermediate',steps:['Understand available signals: keypress timing, swipe velocity, tap pressure, scroll patterns','Study device fingerprinting — FingerprintJS is a good open-source starting point','Build a feature pipeline: aggregate raw signals into per-session statistical features','Train an Isolation Forest or Autoencoder for unsupervised anomaly detection','Read Incognia and NeuroID research papers for production implementations','Practice with public mouse and keystroke dynamics datasets from UCI ML Repository'],resources:[{l:'FingerprintJS (open source)',u:'https://github.com/fingerprintjs/fingerprintjs'},{l:'UCI Keystroke Dynamics dataset',u:'https://archive.ics.uci.edu/dataset/102/keystroke+dynamics+benchmark+dataset'},{l:'Incognia fraud blog',u:'https://www.incognia.com/blog'},{l:'Isolation Forest — scikit-learn',u:'https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html'}]}},
+  {icon:'L',si:'si-red',name:'LLM + fraud rules',desc:'Augment rule engines with LLM embeddings to extract semantic fraud signals from free text.',tags:['LangChain','Embeddings','RAG','Prompt engineering'],
+   guide:{time:'3–5 weeks',level:'Intermediate',steps:['Get fluent with Anthropic or OpenAI APIs — send prompts, parse structured JSON reliably','Learn embeddings: convert transaction notes or support tickets into searchable vectors','Build a RAG pipeline: embed fraud case history, retrieve similar cases for new alerts','Use LangChain or LlamaIndex to chain retrieval + LLM reasoning into a triage agent','Practice structured prompt engineering: extract fraud signals from complaint free text','Read the FLAG paper (KDD 2025) — the benchmark for LLM + GNN fraud detection'],resources:[{l:'Anthropic prompt engineering guide',u:'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview'},{l:'LangChain documentation',u:'https://python.langchain.com'},{l:'Made With ML',u:'https://madewithml.com'},{l:'FLAG paper (KDD 2025)',u:'https://dl.acm.org/doi/10.1145/3711896.3737220'}]}},
+  {icon:'F',si:'si-purple',name:'Federated learning',desc:'Cross-platform fraud model training without sharing raw customer data.',tags:['PyTorch','Flower (flwr)','PySyft','Differential privacy'],
+   guide:{time:'6–8 weeks',level:'Advanced',steps:['Understand core concept: model weights are shared, not raw data — watch DeepMind FL intro','Install Flower (flwr) locally — simulate two federated clients training a shared model','Train a simple fraud classifier across two simulated data silos and verify convergence','Study differential privacy basics — adding calibrated noise to protect individual records','Read Google foundational FL paper (McMahan et al. 2017) before going further','Explore TensorFlow Federated for production-grade FL pipelines at scale'],resources:[{l:'Flower (flwr) framework',u:'https://flower.dev'},{l:'PySyft / OpenMined',u:'https://github.com/OpenMined/PySyft'},{l:'McMahan et al. FL paper (2017)',u:'https://arxiv.org/abs/1602.05629'},{l:'TensorFlow Federated',u:'https://www.tensorflow.org/federated'}]}},
+  {icon:'E',si:'si-amber',name:'Explainability (XAI)',desc:'SHAP, LIME — required for rule review, false-positive management, and regulatory audit.',tags:['SHAP','LIME','DICE','Anchors'],
+   guide:{time:'2–3 weeks',level:'Beginner–Intermediate',steps:['Install SHAP and run on a trained XGBoost model — start with summary_plot and waterfall_plot','Interpret a false positive: use SHAP to explain exactly why a legitimate order was blocked','Try LIME for local explanations on a single prediction; compare output with SHAP','Learn DICE for counterfactual explanations: what would change for this order to pass?','Practice writing a fraud case narrative using SHAP output — simulate a chargeback dispute','Read "Interpretable ML" by Christoph Molnar — free online, the definitive reference'],resources:[{l:'SHAP documentation',u:'https://shap.readthedocs.io'},{l:'Interpretable ML book (free)',u:'https://christophm.github.io/interpretable-ml-book/'},{l:'DiCE library (counterfactuals)',u:'https://github.com/interpretml/DiCE'},{l:'LIME on GitHub',u:'https://github.com/marcotcr/lime'}]}}
+];
+
+const GLOSSARY=[
+  {term:'Account Takeover',abbr:'ATO',def:'A fraudster gains unauthorized access to a customer or driver account, typically via credential stuffing or phishing, then drains stored value or places fraudulent orders.'},
+  {term:'Credential Stuffing',abbr:'CS',def:'Automated testing of stolen username/password pairs from data breaches against a target platform. Successful logins become ATO entry points.'},
+  {term:'First-Party Fraud',abbr:'FPF',def:'Fraud committed by a legitimate account holder — such as falsely claiming an order never arrived, or charging back a consumed order.'},
+  {term:'Promo Abuse',abbr:'PA',def:'Exploiting promotional offers (new-user discounts, referral bonuses) by creating multiple fake accounts or sharing voucher codes across organized rings.'},
+  {term:'Graph Neural Network',abbr:'GNN',def:'A ML model that operates on graph-structured data to detect relational patterns — e.g. multiple accounts sharing a device ID or IP address, flagging fraud rings invisible to per-transaction models.'},
+  {term:'Deepfake-as-a-Service',abbr:'DaaS',def:'Subscription platforms that offer AI-generated voice cloning, video deepfakes, and synthetic image creation to cybercriminals without requiring technical expertise.'},
+  {term:'Friendly Fraud',abbr:'FF',def:'A customer places a legitimate order, receives it, then initiates a chargeback claiming non-delivery or poor quality. Loss is borne by the platform or merchant.'},
+  {term:'Shadow Mode',abbr:'SM',def:'Running a new fraud rule or model in observe-only mode alongside the live system — logging decisions without blocking orders — to measure accuracy before going live.'},
+  {term:'C2PA',abbr:'C2PA',def:'Coalition for Content Provenance and Authenticity — an open technical standard that attaches verifiable metadata to media files, enabling detection of AI-generated or tampered images.'},
+  {term:'PhaaS',abbr:'PhaaS',def:'Phishing-as-a-Service — ready-to-deploy phishing toolkits sold as subscriptions. Platforms like Tycoon 2FA and EvilProxy can bypass multi-factor authentication.'},
+  {term:'SMOTE',abbr:'SMOTE',def:'Synthetic Minority Over-sampling Technique — a method for handling severely imbalanced datasets like fraud labels by synthetically generating minority class examples for model training.'},
+  {term:'False Positive Rate',abbr:'FPR',def:'The proportion of legitimate orders incorrectly blocked by a fraud rule or model. High FPR damages customer experience; minimizing it while maintaining fraud catch rate is the core tension in fraud ops.'}
+];
+
+const SIGNALS=[
+  {num:'$17B',label:'Projected ATO losses globally in 2025',trend:'up',icon:'#e24b4a',bg:'#e24b4a1a'},
+  {num:'65k+',label:'Shadow delivery workers in NYC alone (NYT)',trend:'up',icon:'#ef9f27',bg:'#ef9f271a'},
+  {num:'0.5s',label:'Avg time before a fraudster marks order delivered',trend:'up',icon:'#a78bfa',bg:'#a78bfa15'},
+  {num:'$4.49',label:'Dark web price for a DoorDash account with saved card',trend:'up',icon:'#378add',bg:'#378add1a'},
+  {num:'80%',label:'Of financial institutions adopting biometric verification by 2025',trend:'dn',icon:'#3dc98a',bg:'#3dc98a15'},
+  {num:'200ms',label:'Target p99 latency for real-time fraud scoring pipelines',trend:'dn',icon:'#2dd4bf',bg:'#2dd4bf15'}
+];
+
+const TICKER_ITEMS=[
+  {text:'ATO attacks up 72% YoY in QSR sector',color:'#e24b4a'},
+  {text:'DoorDash driver banned for AI-generated delivery photo — Jan 2026',color:'#ef9f27'},
+  {text:'PromoGuardian GNN model targets promo abuse rings — 2026',color:'#378add'},
+  {text:'$103B in first-party fraud disputes in 2024',color:'#a78bfa'},
+  {text:'Zomato CEO confirms AI-edited complaint image fraud',color:'#e24b4a'},
+  {text:'Deepfake-as-a-Service available to non-technical fraudsters since 2025',color:'#3dc98a'},
+  {text:'30% of high-impact fraud attempts now AI-generated — Pindrop 2026',color:'#ef9f27'},
+  {text:'FLAG paper (KDD 2025): LLM + GNN outperforms XGBoost on ring fraud',color:'#378add'},
+  {text:'20% of food delivery accounts face ATO attempts — 8× industry avg',color:'#a78bfa'},
+  {text:'C2PA content credentials becoming mandatory fraud signal standard',color:'#2dd4bf'}
+];
+
+function buildTicker(){
+  const doubled=[...TICKER_ITEMS,...TICKER_ITEMS];
+  document.getElementById('ticker').innerHTML=doubled.map(t=>`<span class="ticker-item"><span class="ticker-dot" style="background:${t.color}"></span>${t.text}</span>`).join('');
+}
+
+function buildSignals(){
+  document.getElementById('signal-grid').innerHTML=SIGNALS.map(s=>`
+    <div class="signal">
+      <div class="signal-top">
+        <div class="signal-num">${s.num}</div>
+        <div class="signal-icon" style="background:${s.bg}">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${s.icon}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${s.trend==='up'?'<polyline points="18 15 12 9 6 15"/>':'<polyline points="6 9 12 15 18 9"/>'}</svg>
+        </div>
+      </div>
+      <div class="signal-label">${s.label}</div>
+      <div class="signal-trend ${s.trend==='up'?'tr-up':'tr-dn'}">${s.trend==='up'?'↑ Rising':'↓ Improving'}</div>
+    </div>`).join('');
+}
+
+function buildFeatured(){
+  const f=CARDS.find(c=>c.featured);
+  if(!f)return;
+  document.getElementById('featured-wrap').innerHTML=`
+    <div class="featured-card" onclick="openCard(${f.id})">
+      <div class="featured-bg-text">01</div>
+      <div class="featured-label">Editor's pick</div>
+      <h2>${f.title}</h2>
+      <p>${f.summary}</p>
+      <div class="featured-foot">
+        <span class="featured-src">${f.source}</span>
+        <span class="featured-read">read full briefing →</span>
+      </div>
+    </div>`;
+}
+
+function buildCards(f){
+  const rest=CARDS.filter(c=>!c.featured);
+  const list=f==='all'?rest:rest.filter(c=>c.cat===f);
+  document.getElementById('card-count').textContent=(list.length+(f==='all'?1:0))+' briefings';
+  document.getElementById('news-grid').innerHTML=list.map(c=>`
+    <div class="ncard" onclick="openCard(${c.id})">
+      <div class="ncard-stripe" style="background:${c.ac};opacity:.65"></div>
+      <div class="ncard-top">
+        <span class="ntag ${c.tc}">${c.tag}</span>
+        <span class="ndate">${c.date}</span>
+      </div>
+      <h3>${c.title}</h3>
+      <p>${c.summary.slice(0,115)}…</p>
+      <div class="ncard-foot">
+        <span class="nsrc">${c.source.split(',')[0]}</span>
+        <span class="nmore">read briefing →</span>
+      </div>
+    </div>`).join('');
+}
+
+function doFilter(f,btn){
+  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const showFeat=f==='all'||f==='incident';
+  document.getElementById('featured-wrap').style.display=showFeat?'block':'none';
+  buildCards(f);
+}
+
+function openCard(id){
+  const c=CARDS.find(x=>x.id===id);
+  document.getElementById('modal-body').innerHTML=`
+    <span class="ntag ${c.tc}" style="font-size:9px;padding:3px 8px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase;display:inline-block">${c.tag}</span>
+    <h2>${c.title}</h2>
+    <p>${c.detail}</p>
+    <ul>${c.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+    <div class="modal-meta">Source: ${c.source}<br><a class="modal-link" href="${c.link}" target="_blank">read original source →</a></div>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function buildThreats(){
+  document.getElementById('threat-list').innerHTML=THREATS.map(t=>`
+    <div class="trow">
+      <div><div class="trow-name">${t.name}</div><div class="trow-desc">${t.desc}</div></div>
+      <div class="tbar-wrap"><div class="tbar" style="width:${t.pct}%;background:${t.color}"></div></div>
+      <div class="tpct" style="color:${t.color}">${t.pct}%</div>
+    </div>`).join('');
+}
+
+function buildSkills(){
+  document.getElementById('skills-grid').innerHTML=SKILLS.map(s=>`
+    <div class="skill">
+      <div class="skill-head">
+        <div class="skill-icon ${s.si}">${s.icon}</div>
+        <div class="skill-name">${s.name}</div>
+      </div>
+      <div class="skill-desc">${s.desc}</div>
+      <div class="skill-tags">${s.tags.map(t=>`<span class="stag">${t}</span>`).join('')}</div>
+      <span class="guide-link" onclick="openGuide('${s.name}')">view learning guide →</span>
+    </div>`).join('');
+}
+
+function openGuide(name){
+  const s=SKILLS.find(x=>x.name===name);
+  const g=s.guide;
+  document.getElementById('modal-body').innerHTML=`
+    <span class="ntag ntag-blue" style="font-size:9px;padding:3px 8px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase;display:inline-block">Learning guide</span>
+    <h2>${s.name}</h2>
+    <div class="guide-meta">
+      <span class="guide-badge">Time: ${g.time}</span>
+      <span class="guide-badge">Level: ${g.level}</span>
+    </div>
+    <div class="guide-title">Step-by-step path</div>
+    <ul>${g.steps.map(st=>`<li>${st}</li>`).join('')}</ul>
+    <div class="guide-title" style="margin-top:20px">Resources</div>
+    <div class="guide-resources">${g.resources.map(r=>`<a class="modal-link" href="${r.u}" target="_blank">${r.l} →</a>`).join('')}</div>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function buildGlossary(){
+  document.getElementById('glossary').innerHTML=GLOSSARY.map(g=>`
+    <div class="gterm">
+      <div class="gterm-word">${g.term}<span class="gterm-abbr">${g.abbr}</span></div>
+      <div class="gterm-def">${g.def}</div>
+    </div>`).join('');
+}
+
+function closeMod(e){
+  if(!e||e.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+document.querySelector('.modal-close').addEventListener('click',()=>document.getElementById('modal-bg').classList.remove('open'));
+
+function buildChart(){
+  new Chart(document.getElementById('chart').getContext('2d'),{
+    type:'line',
+    data:{
+      labels:['2021','2022','2023','2024','2025','2026 proj'],
+      datasets:[
+        {label:'ATO',data:[30,45,68,90,130,165],borderColor:'#e24b4a',backgroundColor:'#e24b4a0c',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#e24b4a',borderWidth:1.5},
+        {label:'Refund abuse',data:[40,55,65,85,110,140],borderColor:'#378add',backgroundColor:'#378add0c',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#378add',borderWidth:1.5},
+        {label:'AI fraud',data:[5,10,18,35,75,120],borderColor:'#a78bfa',backgroundColor:'#a78bfa0c',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#a78bfa',borderWidth:1.5}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,backgroundColor:'#1a1a28',borderColor:'#ffffff18',borderWidth:0.5,titleColor:'#f0f0f4',bodyColor:'#9898aa',padding:12,cornerRadius:8}},
+      scales:{
+        x:{ticks:{color:'#55556a',font:{size:11}},grid:{color:'#ffffff06'},border:{color:'#ffffff0d'}},
+        y:{ticks:{color:'#55556a',font:{size:11}},grid:{color:'#ffffff06'},border:{color:'#ffffff0d'}}
+      }
+    }
+  });
+}
+
+async function runRefresh(){
+  const btn=document.getElementById('refresh-btn');
+  const icon=document.getElementById('ricon');
+  const banner=document.getElementById('rbanner');
+  btn.disabled=true;icon.classList.add('spinning');
+  banner.style.display='block';banner.style.color='var(--blue)';
+  banner.textContent='Scanning latest fraud intelligence…';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:`You are a fraud analytics expert specializing in food delivery platforms. Return ONLY valid JSON, no markdown:\n{"updated":"Month Year","summary":"one sentence","highlights":[{"title":"headline","body":"2-3 sentence insight","cat":"incident|pattern|ai|industry","tag":"Incident|Fraud pattern|AI / ML|Industry data","tc":"ntag-red|ntag-amber|ntag-blue|ntag-green","ac":"#e24b4a|#ef9f27|#378add|#3dc98a","date":"Month Year","source":"Source name"}]}\nReturn exactly 4 highlights: 1 incident, 1 fraud pattern, 1 AI/ML trend, 1 industry stat. Be specific and data-driven for early 2026.`}]})});
+    const data=await res.json();
+    const parsed=JSON.parse(data.content.map(b=>b.text||'').join('').trim().replace(/```json|```/g,'').trim());
+    document.getElementById('last-updated').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    parsed.highlights.forEach((h,i)=>{CARDS.unshift({id:200+i,cat:h.cat,tag:h.tag,tc:h.tc||'ntag-blue',ac:h.ac||'#378add',date:h.date,title:h.title,summary:h.body,detail:h.body,bullets:['See source for full detail'],source:h.source,link:'#'});});
+    buildCards('all');document.querySelectorAll('.filter').forEach(b=>b.classList.remove('on'));document.querySelector('.filter').classList.add('on');
+    banner.textContent='Intel refreshed — '+parsed.highlights.length+' new briefings added. '+parsed.summary;
+    setTimeout(()=>{banner.style.display='none'},7000);
+  }catch(e){
+    banner.style.color='var(--red)';banner.textContent='Refresh failed — check connection and try again.';
+    setTimeout(()=>{banner.style.display='none';banner.style.color='var(--blue)'},5000);
+  }
+  btn.disabled=false;icon.classList.remove('spinning');
+}
+
+function navTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function scrollTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'})}
+const backTop=document.getElementById('back-top');
+window.addEventListener('scroll',()=>{backTop.classList.toggle('visible',window.scrollY>200)},{passive:true});
+buildTicker();buildSignals();buildFeatured();buildCards('all');buildThreats();buildSkills();buildGlossary();buildChart();
+</script>
+</html>
